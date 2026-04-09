@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   { href: '/mentorship', label: 'Mentorship', icon: GraduationCap },
   { href: '/events', label: 'Events', icon: Calendar },
   { href: '/admin', label: 'Admin', icon: Settings },
-  { href: '/security', label: 'Security', icon: Shield },
+  { href: '/security', label: 'Security', icon: Shield} ,
 ]
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
