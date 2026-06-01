@@ -3,7 +3,13 @@ import { DashboardLayout } from '@/components/dashboard-layout'
 import { AlumniCard } from '@/components/alumni-card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Search } from 'lucide-react'
 
 type AlumniRow = {
@@ -109,29 +115,56 @@ export function DirectoryPage() {
 
   useEffect(() => {
     const prefix = import.meta.env.VITE_API_URL ?? ''
+
     fetch(`${prefix}/api/alumni`)
       .then((r) => r.json())
       .then((data: AlumniRow[]) => {
-        if (Array.isArray(data) && data.length > 0) setAlumni(data)
+        if (Array.isArray(data) && data.length > 0) {
+          setAlumni(data)
+        }
       })
       .catch(() => {})
   }, [])
 
   const companies = useMemo(
-    () => Array.from(new Set(alumni.map((a) => a.company))).sort((a, b) => a.localeCompare(b)),
+    () =>
+      Array.from(
+        new Set(
+          alumni
+            .map((a) => a.company?.trim())
+            .filter(Boolean)
+        )
+      ).sort((a, b) => a.localeCompare(b)),
     [alumni]
   )
+
   const industries = useMemo(
-    () => Array.from(new Set(alumni.map((a) => a.industry))).sort((a, b) => a.localeCompare(b)),
+    () =>
+      Array.from(
+        new Set(
+          alumni
+            .map((a) => a.industry?.trim())
+            .filter(Boolean)
+        )
+      ).sort((a, b) => a.localeCompare(b)),
     [alumni]
   )
+
   const locations = useMemo(
-    () => Array.from(new Set(alumni.map((a) => a.location))).sort((a, b) => a.localeCompare(b)),
+    () =>
+      Array.from(
+        new Set(
+          alumni
+            .map((a) => a.location?.trim())
+            .filter(Boolean)
+        )
+      ).sort((a, b) => a.localeCompare(b)),
     [alumni]
   )
 
   const filteredAlumni = useMemo(() => {
     const query = searchQuery.trim().toLowerCase()
+
     return alumni.filter((a) => {
       const matchesQuery =
         query.length === 0 ||
@@ -139,24 +172,48 @@ export function DirectoryPage() {
         a.company.toLowerCase().includes(query) ||
         a.position.toLowerCase().includes(query) ||
         a.location.toLowerCase().includes(query)
-      const matchesCompany = companyFilter === 'all' || a.company === companyFilter
-      const matchesIndustry = industryFilter === 'all' || a.industry === industryFilter
-      const matchesLocation = locationFilter === 'all' || a.location === locationFilter
-      return matchesQuery && matchesCompany && matchesIndustry && matchesLocation
+
+      const matchesCompany =
+        companyFilter === 'all' || a.company === companyFilter
+
+      const matchesIndustry =
+        industryFilter === 'all' || a.industry === industryFilter
+
+      const matchesLocation =
+        locationFilter === 'all' || a.location === locationFilter
+
+      return (
+        matchesQuery &&
+        matchesCompany &&
+        matchesIndustry &&
+        matchesLocation
+      )
     })
-  }, [alumni, companyFilter, industryFilter, locationFilter, searchQuery])
+  }, [
+    alumni,
+    companyFilter,
+    industryFilter,
+    locationFilter,
+    searchQuery,
+  ])
 
   return (
     <DashboardLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold">Alumni Directory</h1>
-          <p className="text-muted-foreground">Search and connect with alumni across the globe</p>
+          <h1 className="text-3xl font-bold">
+            Alumni Directory
+          </h1>
+
+          <p className="text-muted-foreground">
+            Search and connect with alumni across the globe
+          </p>
         </div>
 
         <div className="space-y-4">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
             <Input
               placeholder="Search by name, company, role, or location..."
               className="pl-10"
@@ -166,42 +223,72 @@ export function DirectoryPage() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-4">
-            <Select value={companyFilter} onValueChange={setCompanyFilter}>
+            <Select
+              value={companyFilter}
+              onValueChange={setCompanyFilter}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Company" />
               </SelectTrigger>
+
               <SelectContent>
-                <SelectItem value="all">All Companies</SelectItem>
+                <SelectItem value="all">
+                  All Companies
+                </SelectItem>
+
                 {companies.map((company) => (
-                  <SelectItem key={company} value={company}>
+                  <SelectItem
+                    key={company}
+                    value={company}
+                  >
                     {company}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select value={industryFilter} onValueChange={setIndustryFilter}>
+            <Select
+              value={industryFilter}
+              onValueChange={setIndustryFilter}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Industry" />
               </SelectTrigger>
+
               <SelectContent>
-                <SelectItem value="all">All Industries</SelectItem>
+                <SelectItem value="all">
+                  All Industries
+                </SelectItem>
+
                 {industries.map((industry) => (
-                  <SelectItem key={industry} value={industry}>
+                  <SelectItem
+                    key={industry}
+                    value={industry}
+                  >
                     {industry}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select value={locationFilter} onValueChange={setLocationFilter}>
+            <Select
+              value={locationFilter}
+              onValueChange={setLocationFilter}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
+
               <SelectContent>
-                <SelectItem value="all">All Locations</SelectItem>
+                <SelectItem value="all">
+                  All Locations
+                </SelectItem>
+
                 {locations.map((location) => (
-                  <SelectItem key={location} value={location}>
+                  <SelectItem
+                    key={location}
+                    value={location}
+                  >
                     {location}
                   </SelectItem>
                 ))}
@@ -225,7 +312,10 @@ export function DirectoryPage() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredAlumni.map((a) => (
-            <AlumniCard key={String(a.id)} alumni={a} />
+            <AlumniCard
+              key={String(a.id)}
+              alumni={a}
+            />
           ))}
         </div>
       </div>
