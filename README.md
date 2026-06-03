@@ -281,7 +281,8 @@ credentials: 'include'
 ---
 ## 🚧 Status
 
-This project is currently under active development.
+
+This project is actively maintained and improvements are being added regularly.
 
 ##
 
