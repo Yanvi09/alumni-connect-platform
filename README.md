@@ -279,12 +279,17 @@ credentials: 'include'
 * Mobile responsive enhancements
 
 ---
+## 🚧 Status
+
+This project is currently under active development.
+
+##
 
 # Author
 
 ## Anvi
 
-Computer Science Student | Full Stack Developer
+Computer Science Student |Backend Developer
 
 GitHub:
 https://github.com/Yanvi09
