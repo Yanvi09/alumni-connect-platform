@@ -33,6 +33,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'https://taupe-florentine-8544f4.netlify.app',
+  'https://alumni-connect-platform-2.onrender.com'
 ]
 
 app.use(
